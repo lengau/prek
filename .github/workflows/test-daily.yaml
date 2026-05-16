@@ -1,0 +1,40 @@
+name: Daily tests
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test the latest snap
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04-arm
+        channel:
+          - latest/stable
+          - latest/candidate
+          - latest/edge
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Pristine Ubuntu
+        if: ${{ runner.os == 'Linux' && runner.environment == 'github-hosted' }}
+        uses: lengau/pristine-ubuntu-action@v0
+      - name: Install
+        run: |
+          if [[ '${{ matrix.channel }}' == 'latest/edge' ]]; then
+            sudo snap install --edge core26
+          fi
+          sudo snap install --classic --channel ${{ matrix.channel }} prek
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Test
+        run: |
+          ./test.sh
