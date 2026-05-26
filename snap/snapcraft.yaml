@@ -1,7 +1,7 @@
 name: prek
 title: prek
 base: core26
-version: 0.4.1
+version: 0.4.2
 summary: A fast Git hook manager written in Rust.
 description: |
   A fast Git hook manager written in Rust, designed as a drop-in
