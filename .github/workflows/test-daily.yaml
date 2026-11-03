@@ -32,7 +32,9 @@ jobs:
           if [[ '${{ matrix.channel }}' == 'latest/edge' ]]; then
             sudo snap install --edge core26
           fi
-          sudo snap install --classic --channel ${{ matrix.channel }} prek
+          sudo snap install --channel ${{ matrix.channel }} prek
+          sudo snap connect prek:removable-media || true
+          sudo snap connect prek:ssh-keys || true
       - name: Checkout
         uses: actions/checkout@v5
       - name: Test
