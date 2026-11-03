@@ -9,7 +9,7 @@ prek --help >/dev/null
 prek cache dir >/dev/null
 echo -e "::endgroup::"
 
-tmpdir="$(mktemp -d)"
+tmpdir="$(mktemp -d -p "$PWD")"
 trap 'rm -rf "$tmpdir"' EXIT
 
 cd "$tmpdir"
