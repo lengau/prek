@@ -8,7 +8,7 @@ description: |
   alternative to pre-commit, reimagined.
 
 grade: stable
-confinement: classic
+confinement: strict
 
 platforms:
   amd64:
@@ -16,7 +16,15 @@ platforms:
   riscv64:
 
 parts:
+  git:
+    plugin: nil
+    stage-packages:
+      - git
+      - openssh-client
+      - ca-certificates
   prek:
+    after:
+      - git
     plugin: rust
     source: https://github.com/j178/prek.git
     source-tag: v$SNAPCRAFT_PROJECT_VERSION
@@ -30,4 +38,13 @@ apps:
   prek:
     command: bin/prek
     environment:
-      PATH: $SNAP/bin:$SNAP/usr/bin:$PATH
+      PATH: $SNAP/bin:$SNAP/usr/bin:$SNAP/usr/lib/git-core:$PATH
+      GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+      GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
+    plugs:
+      - home
+      - network
+      # Some pre-commit hooks spin up local servers or bind ports for testing
+      - network-bind
+      - removable-media
+      - ssh-keys
