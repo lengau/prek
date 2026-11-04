@@ -1,13 +1,13 @@
 name: prek
 title: prek
 base: core26
-version: 0.5.10
 summary: A fast Git hook manager written in Rust.
 description: |
   A fast Git hook manager written in Rust, designed as a drop-in
   alternative to pre-commit, reimagined.
 
-grade: stable
+adopt-info: prek
+grade: devel
 confinement: strict
 
 platforms:
@@ -27,9 +27,12 @@ parts:
       - git
     plugin: rust
     source: https://github.com/j178/prek.git
-    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    source-branch: main
     build-attributes:
       - enable-patchelf
+    override-build: |
+      craftctl default
+      craftctl set version="$(git describe --tags --always | sed 's/^v//')"
     organize:
       prek: bin/prek
       lib*.so: lib/
