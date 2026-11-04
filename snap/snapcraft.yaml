@@ -32,7 +32,7 @@ parts:
       - enable-patchelf
     override-build: |
       craftctl default
-      craftctl set version="$(git describe --tags --always | sed 's/^v//')"
+      craftctl set version="$(git -C "${CRAFT_PART_SRC}" describe --tags --always | sed 's/^v//')"
     organize:
       prek: bin/prek
       lib*.so: lib/
