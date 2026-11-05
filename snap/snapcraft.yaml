@@ -51,3 +51,16 @@ apps:
       - network-bind
       - removable-media
       - ssh-keys
+  pre-commit:
+    command: bin/prek
+    environment:
+      PATH: $SNAP/bin:$SNAP/usr/bin:$SNAP/usr/lib/git-core:$PATH
+      GIT_EXEC_PATH: $SNAP/usr/lib/git-core
+      GIT_TEMPLATE_DIR: $SNAP/usr/share/git-core/templates
+    plugs:
+      - home
+      - network
+      # Some pre-commit hooks spin up local servers or bind ports for testing
+      - network-bind
+      - removable-media
+      - ssh-keys
