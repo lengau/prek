@@ -16,7 +16,7 @@ cd "$tmpdir"
 git init -q
 
 echo -e "::group::\e[32mBASIC\e[0m: Config and validation"
-prek sample-config .pre-commit-config.yaml
+prek sample-config --file .pre-commit-config.yaml
 test -s .pre-commit-config.yaml
 prek validate-config .pre-commit-config.yaml
 echo -e "::endgroup::"
